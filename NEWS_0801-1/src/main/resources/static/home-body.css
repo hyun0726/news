@@ -1,0 +1,112 @@
+@charset "UTF-8";
+/* body-top 컨테이너 스타일 */
+.body-top {
+    height: 500px;    
+    display: flex;   
+    gap:20px;
+    padding: 10px 80px; 
+}
+/* 바디 콘텐츠 */
+.body-content {
+    padding: 0 40px; /* 전체 콘텐츠 좌우 여백 설정 */
+}
+
+/* 헤더 섹션 스타일 */
+.header-section {
+    margin-top: 10px; /* 헤더와 상단 콘텐츠 사이의 여백 설정 */
+}
+
+/* 왼쪽 박스 스타일 */
+.left {
+	flex:3;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height:100%;   
+    aspect-ratio: 5 / 3;
+}
+
+.left .box {
+    width: 100%; /* 박스 너비를 컨테이너에 맞게 설정 */
+    height: calc(100% - 20px); /* 박스 높이를 컨테이너에 맞게 설정 */
+
+    border-radius: 10px;/*모퉁이 둥굴게*/
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+   	
+}
+.box-img {
+    width:800px;
+    height:500px;
+    overflow:hidden;
+    margin:0 auto;
+} 
+.box img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    
+}
+.box h2  {
+    margin: 10px 0;
+    font-size: 1.1em; 
+
+}
+.box h2:hover {
+    text-decoration: underline;
+    text-decoration-color: black; /* Black underline color */
+}
+
+.box p {
+    margin: 5px 0;
+    font-size: 0.9em;
+} 
+.box a {
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: gray;
+}            
+/* 오른쪽 박스 스타일 */
+.right {
+	flex:2;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr); /* 3개의 행을 같은 비율로 설정 */
+    height:100%;  
+   
+}
+
+/* 오른쪽 박스 개별 스타일 */
+.right .box {
+    width:100%; /* 박스 너비를 컨테이너에 맞게 설정 */
+    
+    border-radius: 10px;/*모퉁이 둥굴게*/
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+   
+}
+
+/* 구독 */
+.body-subscribe {
+    flex: 6;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 80px;
+    gap: 80px; /* 구독 상자들 사이의 간격 설정 */
+    margin-bottom: 20px; /* 아래 선과의 간격 설정 */
+}
+
+.body-subscribe .sub-box {
+    width: 80px; /* 박스 너비를 컨테이너에 맞게 설정 */
+    height: 80px;
+    background-color: #69966c; /* 박스 배경색 설정 */
+    border-radius: 10px; /* 모퉁이 둥글게 */
+    display: flex;
+    justify-content: center; /* 텍스트 수평 중앙 정렬 */
+    align-items: center; /* 텍스트 수직 중앙 정렬 */
+    font-size: 14px; /* 텍스트 크기 설정 */
+    font-weight: bold; /* 텍스트 굵게 설정 */
+    color: black; /* 텍스트 색상 설정 */
+}
