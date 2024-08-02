@@ -1,0 +1,136 @@
+@charset "UTF-8";
+/* body-top 컨테이너 스타일 */
+.body-top {
+    height: 500px;    
+    display: flex;   
+    gap:20px;
+    padding: 10px 80px; 
+}
+/* 바디 콘텐츠 */
+.body-content {
+    padding: 0 40px; /* 전체 콘텐츠 좌우 여백 설정 */
+}
+
+/* 헤더 섹션 스타일 */
+.header-section {
+    margin-top: 10px; /* 헤더와 상단 콘텐츠 사이의 여백 설정 */
+    
+}
+
+/* 왼쪽 박스 스타일 */
+.left {
+	flex:1;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height:100%;   
+    aspect-ratio: 3/2;
+}
+
+.left .box {
+    width: 100%; /* 박스 너비를 컨테이너에 맞게 설정 */
+    height: calc(100% - 20px); /* 박스 높이를 컨테이너에 맞게 설정 */
+    border-radius: 10px;/*모퉁이 둥굴게*/
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+   	
+}
+.big-box-img {
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.big-box-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.small-box{
+	display: flex; /* Flexbox를 사용하여 요소들을 정렬 */
+    justify-content: space-between; /* 여유 공간을 요소 사이에 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+.small-box-img {
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.small-box-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.box-text {
+    flex: 1; /* 가능한 공간을 차지하도록 설정 */
+    margin-right: 20px; /* 텍스트와 이미지 사이에 여백 추가 */
+}
+.box h2  {
+    margin: 10px 0;
+    font-size: 1.1em; 
+	cursor:pointer
+}
+.box h2:hover {
+    text-decoration: underline;
+    text-decoration-color: black; /* Black underline color */
+}
+
+.box p {
+    margin: 5px 0;
+    font-size: 0.9em;
+} 
+.box a {
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: gray;
+}            
+/* 오른쪽 박스 스타일 */
+.right {
+	flex:1;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr); /* 3개의 행을 같은 비율로 설정 */
+    height:100%;  
+   
+}
+
+/* 오른쪽 박스 개별 스타일 */
+.right .box {
+    width:100%; /* 박스 너비를 컨테이너에 맞게 설정 */
+    
+    border-radius: 10px;/*모퉁이 둥굴게*/
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+   
+}
+
+
+/* 구독 */
+.body-subscribe {
+    flex: 6;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 80px;
+    gap: 80px; /* 구독 상자들 사이의 간격 설정 */
+    margin-bottom: 20px; /* 아래 선과의 간격 설정 */
+}
+
+.body-subscribe .sub-box {
+    width: 80px; /* 박스 너비를 컨테이너에 맞게 설정 */
+    height: 80px;
+    border-radius: 10px; /* 모퉁이 둥글게 */
+    display: flex;
+  	overflow: hidden;
+}
+.sub-box img{
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor:pointer
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>YKP</title>
+    <link rel="stylesheet" th:href="@{/home-header.css}">
+    <link rel="stylesheet" th:href="@{/home-body.css}">
+</head>
+<body>
+    
+        <hr class="line">
+        <div class="header-top">
+            <div class="h-left">
+                <span th:text="${currentDate}"></span>
+            </div>
+            <div class="h-center">
+                <div class="logo-box">
+                    <span class="logo-text">Y</span>
+                    <span class="logo-text">K</span>
+                    <span class="logo-text">P</span>
+                </div>
+            </div>
+            <div class="h-right">
+                <a href="/login" class="link">로그인</a>
+                <a href="/register" class="link">회원가입</a>
+            </div>
+        </div>
+        <hr class="line">
+        <div class="header-center">
+            <div class="center">
+                <img src="/img/2024logo.gif" class="img">
+            </div>
+        </div>
+    
+    <hr class="line">
+    <div class="header-bottom">
+        <nav class="menu-bar">
+            <a href="/news" class="menu-link">뉴스</a>
+            <a href="/entertainment" class="menu-link">연예</a>
+            <a href="/sports" class="menu-link">스포츠</a>
+            <a href="/weather" class="menu-link">날씨</a>
+        </nav>
+    </div>
+    <div class="body-top">
+        <div class="left">
+            <div class="box" th:if="${politics.size() > 0}" th:with="news=${politics.get(0)}">
+                <div class="big-box-img">
+                    <img th:src="${news.imageUrl}" alt="이미지">
+                </div>
+                
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <p th:text="${news.summary.length() > 300 ? news.summary.substring(0, 300) + '...' : news.summary}">요약</p>
+                    <a th:text="${news.publishedAt}">발행일</a>
+               
+            </div>
+        </div>
+        <div class="right">
+            <div class="box" th:each="news, iterStat : ${politics}" th:if="${iterStat.index > 0 && iterStat.index < 4}">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                <p th:text="${news.summary.length() > 80 ? news.summary.substring(0, 80) + '...' : news.summary}">요약</p>
+                <a th:text="${news.publishedAt}">발행일</a>
+            </div>
+        </div>
+        <div class="right">
+            <div class="box" th:each="news, iterStat : ${politics}" th:if="${iterStat.index >= 4 && iterStat.index < 7}">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                <p th:text="${news.summary.length() > 80 ? news.summary.substring(0, 80) + '...' : news.summary}">요약</p>
+                <a th:text="${news.publishedAt}">발행일</a>
+            </div>
+        </div>
+    </div>
+    <hr class="line">
+    <div class="body-content">
+        <div class="body-section">
+            <h2>구독</h2>
+        </div>
+        <div class="body-subscribe">
+            <div class="sub-box"><img src="/img/JTBCNEWS.png" ></div>
+            <div class="sub-box"><img src="/img/KBSNEWS.png" ></div>
+            <div class="sub-box"><img src="/img/MBCNEWS.png" ></div>
+            <div class="sub-box"><img src="/img/SBSNEWS.jpg" ></div>
+            <div class="sub-box"><img src="/img/ytn.png"></div>
+            <div class="sub-box"><img src="/img/연합뉴스.png" ></div>
+            <div class="sub-box"><img src="/img/연합뉴스TV.jpg" ></div>
+            <div class="sub-box"><img src="/img/한국경제TV.png"></div>
+           
+        </div>
+    </div>
+    <hr class="line">
+    
+        <div class="body-content">
+        <div class="header-section">
+            <h2>연예뉴스</h2>
+        </div>
+    </div>
+        <div class="body-top">
+            <div class="right">
+                <div class="box" th:each="news, iterStat : ${entertainments}" th:if="${iterStat.index < 3}">
+                   <div class="small-box">
+                    <div class="small-box-img">
+                    <img th:src="${news.imageUrl}" alt="이미지">
+                	</div>
+                   
+                   <div class="box-text">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
+                    <a th:text="${news.publishedAt}">발행일</a>
+                    </div>
+                   </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="box" th:each="news, iterStat : ${entertainments}" th:if="${iterStat.index >= 3 && iterStat.index < 6}">
+                    
+                    <div class="small-box">
+                    <div class="small-box-img">
+                    <img th:src="${news.imageUrl}" alt="이미지">
+                	</div>
+                    
+                    <div class="box-text">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
+                    <a th:text="${news.publishedAt}">발행일</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       <hr class="line">
+    <div class="body-content">
+        <div class="header-section">
+            <h2>스포츠뉴스</h2>
+        </div>
+    </div>
+        <div class="body-top">
+            <div class="right">
+                <div class="box" th:each="news, iterStat : ${sports}" th:if="${iterStat.index < 3}">
+                   <div class="small-box">
+                    <div class="small-box-img">
+                    <img th:src="${news.imageUrl}" alt="이미지">
+                	</div>
+                   
+                   <div class="box-text">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
+                    <a th:text="${news.publishedAt}">발행일</a>
+                    </div>
+                   </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="box" th:each="news, iterStat : ${sports}" th:if="${iterStat.index >= 3 && iterStat.index < 6}">
+                    
+                    <div class="small-box">
+                    <div class="small-box-img">
+                    <img th:src="${news.imageUrl}" alt="이미지">
+                	</div>
+                    
+                    <div class="box-text">
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
+                    <a th:text="${news.publishedAt}">발행일</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+ 
+</body>
+</html>
