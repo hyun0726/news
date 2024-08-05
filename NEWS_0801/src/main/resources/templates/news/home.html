@@ -36,8 +36,8 @@
     <div class="header-bottom">
         <nav class="menu-bar">
             <a href="/news" class="menu-link">뉴스</a>
-            <a href="/entertainment" class="menu-link">연예</a>
-            <a href="/sports" class="menu-link">스포츠</a>
+            <a href="#entertainments-section" class="menu-link">연예</a>
+            <a href="#sports-section" class="menu-link">스포츠</a>
             <a href="/weather" class="menu-link">날씨</a>
         </nav>
     </div>
@@ -48,24 +48,25 @@
                     <img th:src="${news.imageUrl}" alt="이미지">
                 </div>
                 
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
+
                     <p th:text="${news.summary.length() > 300 ? news.summary.substring(0, 300) + '...' : news.summary}">요약</p>
-                    <a th:text="${news.publishedAt}">발행일</a>
+                     <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
                
             </div>
         </div>
         <div class="right">
             <div class="box" th:each="news, iterStat : ${politics}" th:if="${iterStat.index > 0 && iterStat.index < 4}">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+ 			<h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                 <p th:text="${news.summary.length() > 80 ? news.summary.substring(0, 80) + '...' : news.summary}">요약</p>
-                <a th:text="${news.publishedAt}">발행일</a>
+                 <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
             </div>
         </div>
         <div class="right">
             <div class="box" th:each="news, iterStat : ${politics}" th:if="${iterStat.index >= 4 && iterStat.index < 7}">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                 <p th:text="${news.summary.length() > 80 ? news.summary.substring(0, 80) + '...' : news.summary}">요약</p>
-                <a th:text="${news.publishedAt}">발행일</a>
+                <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
             </div>
         </div>
     </div>
@@ -88,11 +89,11 @@
     </div>
     <hr class="line">
     
-        <div class="body-content">
-        <div class="header-section">
+     
+        <div class="body-content" id="entertainments-section">
             <h2>연예뉴스</h2>
         </div>
-    </div>
+   
         <div class="body-top">
             <div class="right">
                 <div class="box" th:each="news, iterStat : ${entertainments}" th:if="${iterStat.index < 3}">
@@ -102,9 +103,9 @@
                 	</div>
                    
                    <div class="box-text">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                     <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
-                    <a th:text="${news.publishedAt}">발행일</a>
+                     <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
                     </div>
                    </div>
                 </div>
@@ -118,20 +119,20 @@
                 	</div>
                     
                     <div class="box-text">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                     <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
-                    <a th:text="${news.publishedAt}">발행일</a>
+                     <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
        <hr class="line">
-    <div class="body-content">
-        <div class="header-section">
+    
+         <div class="body-content" id="sports-section">
             <h2>스포츠뉴스</h2>
         </div>
-    </div>
+ 
         <div class="body-top">
             <div class="right">
                 <div class="box" th:each="news, iterStat : ${sports}" th:if="${iterStat.index < 3}">
@@ -141,9 +142,9 @@
                 	</div>
                    
                    <div class="box-text">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                     <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
-                    <a th:text="${news.publishedAt}">발행일</a>
+                     <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
                     </div>
                    </div>
                 </div>
@@ -157,14 +158,19 @@
                 	</div>
                     
                     <div class="box-text">
-                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}">제목</h2>
+                    <h2 th:text="${news.title.length() > 50 ? news.title.substring(0, 50) + '...' : news.title}"  onclick="sendNewsDetails(this)">제목</h2>
                     <p th:text="${news.summary.length() > 100 ? news.summary.substring(0, 100) + '...' : news.summary}">요약</p>
-                    <a th:text="${news.publishedAt}">발행일</a>
+                    <a th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd')}">발행일</a>
                     </div>
                 </div>
             </div>
         </div>
     </div> 
  
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+</script>
+
 </body>
 </html>

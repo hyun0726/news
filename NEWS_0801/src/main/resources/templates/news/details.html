@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1 th:text="${news.title}">제목</h1>
+    <p th:text="${news.publisher}">출처</p>
+    <p th:text="${news.author}">저자</p>
+    <p th:text="${news.summary}">요약</p>
+    <img th:src="${news.imageUrl}" alt="이미지">
+    <p th:text="${news.publishedAt}">발행일</p>
+</body>
+</html>

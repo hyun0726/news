@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +17,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korea.news.dao.NewsDAO;
 import com.korea.news.list.NewsItem;
 import com.korea.news.list.NewsResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.korea.news.vo.NewsVO;
 
 @Service
 public class NewsService {
+	final NewsDAO newsDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(NewsService.class);
 
@@ -34,7 +37,9 @@ public class NewsService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public NewsService(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    @Autowired
+    public NewsService(NewsDAO newsDAO, RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this.newsDAO = newsDAO;
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
@@ -76,4 +81,5 @@ public class NewsService {
 
         return resultVO.getData();
     }
-}
+
+    }

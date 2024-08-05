@@ -1,5 +1,6 @@
 package com.korea.news.list;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,10 +8,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true) // 정의되지 않은 필드 무시
 public class NewsItem {
+    
     private String id;
     private String title;
     private String publisher;
@@ -24,10 +27,10 @@ public class NewsItem {
     private String contentUrl;
 
     @JsonProperty("published_at") // JSON 필드와 매핑
-    private String publishedAt;
+    private Date publishedAt;
 
-    private String[] sections; // 또는 List<String>
+    private List<String> sections; // List<String> 사용
 
     @JsonProperty("companies") // JSON 필드와 매핑
-    private List<Company> companies; // 또는 적절한 데이터 타입
+    private List<Company> companies; // 적절한 데이터 타입 사용
 }

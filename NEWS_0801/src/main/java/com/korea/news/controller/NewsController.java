@@ -3,15 +3,25 @@ package com.korea.news.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.korea.news.list.NewsItem;
 import com.korea.news.service.NewsService;
+import com.korea.news.vo.NewsVO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/news/*")
@@ -23,6 +33,11 @@ public class NewsController {
     public NewsController(NewsService newsService) {
         this.newsService = newsService;
     }
+    @Autowired
+	HttpSession session;
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	//메인화면
 	@GetMapping("/home")
@@ -63,24 +78,8 @@ public class NewsController {
 	 @GetMapping("/register")
 	 public String register() {
 	     return "register"; 
-	  }	   
-	 // 뉴스 화면
-	 @GetMapping("/news")
-	 public String news() {
-	     return "news"; 
-	  }
+	  }	  
 
-	  // 연예 화면
-	  @GetMapping("/entertainment")
-	  public String entertainment() {
-	      return "entertainment"; 
-	  }
-
-	  // 스포츠 화면
-	  @GetMapping("/sports")
-	  public String sports() {
-	      return "sports"; 
-	  }
 
 	  // 날씨 화면
 	  @GetMapping("/weather")

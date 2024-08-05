@@ -1,24 +1,20 @@
 package com.korea.news.vo;
 
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class NewsVO {
-	private String title;
-	private String originallink;
-	private String link;
-	private String description;
-	private String pubDate;
-	
-
+    private String id;
+    private String title;
+    private String publisher;
+    private String author;
+    private String summary;
+    private String imageUrl;
+    private String publishedAt; 
+    
+  
 }
