@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko"
+	xmlns="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<!-- css, js는 main file에 전부 link하기-->
+		<title>main</title>
+		<link rel="stylesheet" th:href="@{/home-header.css}">
+		<link rel="stylesheet" th:href="@{/home-body.css}">
+		<link
+		  rel="stylesheet"
+		  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+		/>
+		<link rel="stylesheet" type="text/css" th:href="@{/common.css}"></link>
+		<link rel="stylesheet" type="text/css" th:href="@{/header.css}"></link>
+		<link rel="stylesheet" type="text/css" th:href="@{/current.css}"></link>
+		<link rel="stylesheet" type="text/css" th:href="@{/weatherTable.css}"></link>
+		<link rel="stylesheet" type="text/css" th:href="@{/weeklyDay.css}"></link>
+	</head>
+	<body>
+		<!--
+		<header th:replace="~{header::headerFragment}"></header>
+		-->
+		    <hr class="line">
+		    <div class="header-top">
+		        <div class="h-left">
+		            <span th:text="${currentDate}"></span>
+		        </div>
+		        <div class="h-center">
+		            <div class="logo-box">
+		                <span class="logo-text">Y</span>
+		                <span class="logo-text">K</span>
+		                <span class="logo-text">P</span>
+		            </div>
+		        </div>
+		        <div class="h-right">
+		            <a href="login" class="link">로그인</a>
+		            <a href="register" class="link">회원가입</a>
+		        </div>
+		    </div>
+		    <hr class="line">
+		    <div class="header-center">
+		        <div class="center">
+		            <img src="/img/2024logo.gif" class="img">
+		        </div>
+		    </div>
+
+		<hr class="line">
+		<div class="header-bottom">
+		    <nav class="menu-bar">
+		        <a href="/news" class="menu-link">뉴스</a>
+		        <a href="/entertainment" class="menu-link">연예</a>
+		        <a href="/sports" class="menu-link">스포츠</a>
+		        <a href="/weather" class="menu-link">날씨</a>
+		    </nav>
+		</div>
+		<main>
+			<div id="main_div">
+				<div id="main_content" style="display: flex;align-items: center; justify-content: center;">
+					<div th:replace="~{current::currentFragment}"></div>
+					<div th:replace="~{weatherTable::weatherTableFragment}"></div>
+				</div>
+				<div th:replace="~{weatherGraph::weatherGraphFragment}"></div>
+				<div id="weekly">
+					<div id="weekly_title">
+						<span>주간예보</span>
+					</div>
+					<div th:replace="~{weeklyDay::weeklyFragment}"></div>
+					<div th:replace="~{weeklyScroll::weeklyScrollFragment}"></div>
+				</div>
+			</div>
+		</main>
+		<!-- footer -->
+		<footer></footer>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script type="text/javascript">
+		const swiper = new Swiper('.swiper', {
+		  // Optional parameters
+		  direction: 'horizontal',
+		  loop: true,
+
+
+		  // Navigation arrows
+		  navigation: {
+		    nextEl: '.swiper-button-next',
+		    prevEl: '.swiper-button-prev',
+		  },
+
+		});
+	</script>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>weatherTable</title>
+	</head>
+	<body>
+		<div th:fragment="weatherTableFragment">
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					<div id="slide_three" class="swiper-slide" style="display: flex;
+					justify-content: center; align-items: center;">
+						<div>
+							<ul class="weather_table_list">
+						        <li>
+						            <dl>
+						                <dt>습도</dt>
+						                <dd><em>87</em><span class="unit">%</span></dd>
+						            </dl>
+						        </li>
+						        <li>
+						            <dl>
+						                <dt>체감</dt>
+						                <dd>29.8°</dd>
+						            </dl>
+						        </li>
+						        <li>
+						            <dl>
+						                <dt>남풍</dt>
+						                <dd><em>2.5</em><span class="unit">m/s</span></dd>
+						            </dl>
+						        </li>
+						    </ul>
+							<ul class="weather_table_list">
+						        <li>
+						            <dl>
+						                <dt>미세</dt>
+						                <dd class="level4_1">
+						                    <span>좋음</span>
+						                </dd>
+						            </dl>
+						        </li>
+						    
+						        <li>
+						            <dl>
+						                <dt>초미세</dt>
+						                <dd class="level4_1">
+						                    <span>좋음</span>
+						                </dd>
+						            </dl>
+						        </li>
+						    
+						        <li>
+						            <dl>
+						                <dt>일몰</dt>
+						                <dd>19:44</dd>
+						            </dl>
+						        </li>
+						    </ul>
+						</div>
+					</div>
+					<!--슬라이드 two-->
+					<div id="slide_four" class="swiper-slide"
+					style="display: flex;
+					justify-content: center;
+					align-items: center;">
+						<div>
+							<ul class="weather_table_list">
+						        <li>
+						            <dl>
+						                <dt>내일오전</dt>
+						                <dd><em>27</em><span class="unit">°</span></dd>
+						            </dl>
+						        </li>
+						        <li>
+						            <dl>
+						                <dt>습도</dt>
+						                <dd>20%</dd>
+						            </dl>
+						        </li>
+						        <li>
+									<dt>미세</dt>
+									<dd class="level4_1" style="color: blue;">
+									    <span >좋음</span>
+									</dd>
+						        </li>
+								<li>
+									<dl>
+									    <dt>초미세</dt>
+									    <dd class="level4_1" style="color: green;">
+									        <span>보통</span>
+									    </dd>
+									</dl>
+								</li>
+						    </ul>
+							<ul class="weather_table_list">
+						        <li>
+									<dl>
+									    <dt>내일오후</dt>
+									     <dd><em>32</em><span class="unit">°</span></dd>
+									</dl>
+						        </li>
+								<li>
+								    <dl>
+								        <dt>습도</dt>
+								        <dd>20%</dd>
+								    </dl>
+								</li>
+								<li>
+									<dt>미세</dt>
+									<dd class="level4_1" style="color: blue;">
+									    <span>좋음</span>
+									</dd>
+								</li>
+								<li>
+									<dl>
+									    <dt>초미세</dt>
+									    <dd class="level4_1" style="color: green;">
+									        <span >보통</span>
+									    </dd>
+									</dl>
+								</li>
+						    </ul>
+						</div>
+					</div>
+				</div>
+				<button type="button" class="swiper-button-prev" onclick="" style="color: black;"><span class="blind"></span></button>
+				<button type="button" class="swiper-button-next" onclick="" style="color: black;"><span class="blind"></span></button>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>join</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/authContent.css}"></link>
+		<link rel="stylesheet" th:href="@{/home-header.css}">
+		<link rel="stylesheet" th:href="@{/home-body.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/common.css}"></link>
+	</head>
+	<body>
+	    <hr class="line">
+	    <div class="header-top">
+	        <div class="h-left">
+	            <span th:text="${currentDate}"></span>
+	        </div>
+	        <div class="h-center">
+	            <div class="logo-box">
+	                <span class="logo-text">Y</span>
+	                <span class="logo-text">K</span>
+	                <span class="logo-text">P</span>
+	            </div>
+	        </div>
+	        <div class="h-right">
+	            <a href="login" class="link">로그인</a>
+	            <a href="register" class="link">회원가입</a>
+	        </div>
+	    </div>
+	    <hr class="line">
+	    <div class="header-center">
+	        <div class="center">
+	            <img src="/img/2024logo.gif" class="img">
+	        </div>
+	    </div>
+
+	<hr class="line">
+	<div class="header-bottom">
+	    <nav class="menu-bar">
+	        <a href="/news" class="menu-link">뉴스</a>
+	        <a href="/entertainment" class="menu-link">연예</a>
+	        <a href="/sports" class="menu-link">스포츠</a>
+	        <a href="weather" class="menu-link">날씨</a>
+	    </nav>
+	</div>
+	<main>
+		 <div class="auth_content">
+			<div class="title_div">
+			  <span class="title_span">회원가입 하기</span>
+			</div>
+			<div class="title_div">
+			  <form class="auth_form">
+				<div class="auth_div">
+					<label class="auth_label" for="name">이름</label>
+					<input type="text" class="input_style" palceholder="이름을 입력하세요." id="name"></input>
+				</div>
+				<div class="auth_div">
+					<label class="auth_label" for="email">이메일</label>
+				    <input type="text" class="input_style" palceholder="이메일을 입력하세요." id="email"></input>
+				</div>
+				<div class="auth_div">
+					<label class="auth_label" for="password">비밀번호</label>
+					<input type="text" class="input_style" palceholder="비밀번호를 입력하세요." id="password"></input>
+				</div>
+				<div class="auth_div">
+					<label class="auth_label" for="password_re">비밀번호 확인</label>
+					<input type="text" class="input_style" palceholder="비밀번호를 한번 더 입력하세요." id="password_re"></input>
+				</div>
+			  </form>
+			  <button href="register" class="auth_btn" type="submit" >회원가입</button>
+			</div>
+		  </div>
+	  </main>
+	</body>
+</html>

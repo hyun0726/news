@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>current</title>
+	</head>
+	<body>
+		<div th:fragment="currentFragment">
+			<div id="title_current">
+				<span>오늘의 날씨</span>
+			</div>
+			<!--현재위치-->
+			<div class="location_info_area">
+				<span>부평구 부평5동</span>
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30" height="30" viewBox="0 0 256 256" xml:space="preserve">
+					<defs>
+					</defs>
+					<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+						<path d="M 75.847 85.108 H 14.153 c -1.657 0 -3 -1.343 -3 -3 V 41.183 c 0 -1.657 1.343 -3 3 -3 s 3 1.343 3 3 v 37.925 h 55.693 V 41.183 c 0 -1.657 1.343 -3 3 -3 s 3 1.343 3 3 v 40.925 C 78.847 83.766 77.504 85.108 75.847 85.108 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+						<path d="M 86.497 39.099 c -0.58 0 -1.167 -0.168 -1.684 -0.52 L 45 11.52 L 5.187 38.58 c -1.372 0.934 -3.237 0.575 -4.167 -0.794 c -0.932 -1.371 -0.576 -3.236 0.794 -4.167 l 41.5 -28.207 c 1.019 -0.692 2.355 -0.692 3.373 0 l 41.5 28.207 c 1.37 0.931 1.726 2.797 0.795 4.167 C 88.4 38.639 87.457 39.099 86.497 39.099 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+						<path d="M 75.847 19.197 c -1.657 0 -3 -1.343 -3 -3 v -4.812 h -7.626 c -1.657 0 -3 -1.343 -3 -3 s 1.343 -3 3 -3 h 10.626 c 1.657 0 3 1.343 3 3 v 7.812 C 78.847 17.854 77.504 19.197 75.847 19.197 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+					</g>
+					</svg>
+				</div>
+			</div>
+			<!--현재 위치의 날씨,온도,습도,체감,바람,미세먼지,초미세먼지,일몰-->
+			<div id="weather_area">
+				<!--날씨와 온도-->
+				<div style="display: block; height: 160px;">
+					<div style="position: absolute; z-index: -1;">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="150" height="150" viewBox="0 0 256 256" xml:space="preserve">
+						<defs>
+						</defs>
+						<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+							<circle cx="44.995999999999995" cy="44.995999999999995" r="26.676" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
+							<path d="M 45 11.053 c -0.552 0 -1 -0.448 -1 -1 V 1 c 0 -0.552 0.448 -1 1 -1 s 1 0.448 1 1 v 9.053 C 46 10.605 45.552 11.053 45 11.053 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 45 90 c -0.552 0 -1 -0.447 -1 -1 v -9.053 c 0 -0.553 0.448 -1 1 -1 s 1 0.447 1 1 V 89 C 46 89.553 45.552 90 45 90 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 10.053 46 H 1 c -0.552 0 -1 -0.448 -1 -1 s 0.448 -1 1 -1 h 9.053 c 0.552 0 1 0.448 1 1 S 10.605 46 10.053 46 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 89 46 h -9.053 c -0.553 0 -1 -0.448 -1 -1 s 0.447 -1 1 -1 H 89 c 0.553 0 1 0.448 1 1 S 89.553 46 89 46 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 69.711 21.289 c -0.256 0 -0.512 -0.098 -0.707 -0.293 c -0.391 -0.391 -0.391 -1.023 0 -1.414 l 6.401 -6.401 c 0.391 -0.391 1.023 -0.391 1.414 0 s 0.391 1.023 0 1.414 l -6.401 6.401 C 70.223 21.191 69.967 21.289 69.711 21.289 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 13.887 77.112 c -0.256 0 -0.512 -0.098 -0.707 -0.293 c -0.391 -0.391 -0.391 -1.023 0 -1.414 l 6.401 -6.401 c 0.391 -0.391 1.023 -0.391 1.414 0 s 0.391 1.023 0 1.414 l -6.401 6.401 C 14.399 77.015 14.143 77.112 13.887 77.112 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 20.289 21.289 c -0.256 0 -0.512 -0.098 -0.707 -0.293 l -6.401 -6.401 c -0.391 -0.391 -0.391 -1.023 0 -1.414 s 1.023 -0.391 1.414 0 l 6.401 6.401 c 0.391 0.391 0.391 1.023 0 1.414 C 20.8 21.191 20.544 21.289 20.289 21.289 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+							<path d="M 76.112 77.112 c -0.256 0 -0.512 -0.098 -0.707 -0.293 l -6.401 -6.401 c -0.391 -0.391 -0.391 -1.023 0 -1.414 s 1.023 -0.391 1.414 0 l 6.401 6.401 c 0.391 0.391 0.391 1.023 0 1.414 C 76.624 77.015 76.368 77.112 76.112 77.112 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(249,193,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+						</g>
+						</svg>
+					</div>
+					<span style="position: relative;
+					top: 50px;
+					left: 50px;
+					font-size: 50px;">27.2°</span>
+				</div>
+				<div class="summary">
+					<span class="weather_span" style="display: none;">맑음</span>
+				    <span>어제보다</span>
+					<span class="blue_bt">2.2°</span>
+					<div>
+						<span style="display: none;">"낮아짐"</span>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30" height="30" viewBox="0 0 256 256" xml:space="preserve">
+						<defs>
+						</defs>
+						<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+							<path d="M 79.079 59.51 c -0.537 -0.63 -1.483 -0.708 -2.114 -0.171 L 46.5 85.255 V 1.5 C 46.5 0.671 45.829 0 45 0 s -1.5 0.671 -1.5 1.5 v 83.755 L 13.035 59.339 c -0.63 -0.536 -1.577 -0.461 -2.114 0.171 c -0.537 0.631 -0.46 1.577 0.17 2.114 l 32.938 28.019 c 0.016 0.014 0.038 0.019 0.054 0.032 c 0.09 0.07 0.182 0.138 0.288 0.187 c 0.026 0.012 0.053 0.016 0.079 0.026 c 0.032 0.013 0.063 0.022 0.095 0.032 C 44.694 89.968 44.847 90 45 90 c 0 0 0 0 0 0 s 0 0 0 0 c 0.153 0 0.306 -0.032 0.455 -0.08 c 0.032 -0.01 0.063 -0.019 0.094 -0.032 c 0.026 -0.01 0.053 -0.015 0.079 -0.027 c 0.106 -0.049 0.198 -0.117 0.288 -0.187 c 0.017 -0.013 0.038 -0.018 0.054 -0.032 l 32.937 -28.019 C 79.539 61.087 79.616 60.141 79.079 59.51 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+						</g>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>weeklyDay</title>
+	</head>
+	<body>
+	<div th:fragment="weeklyFragment" class="weely_container">
+		<!--하루의 날씨(주간예보)-->
+		<div class="day_data">
+		    <div class="cell_date">
+		        <span class="date_inner">
+		            <strong class="day">오늘</strong>
+					<span class="date">7.29</span>
+		        </span>
+		    </div>
+		    <div class="cell_weather">
+		        <span class="weather_inner">
+		            <strong>
+		                <span>오전</span>
+		                <span>60%</span>
+		            </strong>
+		            <i>구름 많고 한때 비</i>
+		        </span>
+		        <span class="weather_inner">
+					<strong class="inner_text">
+					    <span>오후</span>
+					    <span>30%</span>
+					</strong>
+		            <i>흐림</i>
+		        </span>
+		    </div>
+		    <div class="cell_temperature">
+		        <strong class="temperature">
+		            <span class="lowest"><span class="blind">최저기온</span>26°</span>
+		            <span class="bar">/</span>
+		            <span class="highest"><span class="blind">최고기온</span>28°</span>
+		        </strong>
+		    </div>
+		</div>
+		<!--하루 날씨 끝-->
+		<div class="day_data">
+		    <div class="cell_date">
+		        <span class="date_inner">
+		            <strong class="day">내일</strong>
+					<span class="date">7.30</span>
+		        </span>
+		    </div>
+		    <div class="cell_weather">
+		        <span class="weather_inner">
+		            <strong>
+		                <span>오전</span>
+		                <span>40%</span>
+		            </strong>
+		            <i>흐림</i>
+		        </span>
+		        <span>
+					<strong class="inner_text">
+					    <span>오후</span>
+					    <span>30%</span>
+					</strong>
+		            <i>맑음</i>
+		        </span>
+		    </div>
+		    <div class="cell_temperature">
+		        <strong class="temperature">
+		            <span class="lowest"><span class="blind">최저기온</span>26°</span>
+		            <span class="bar">/</span>
+		            <span class="highest"><span class="blind">최고기온</span>28°</span>
+		        </strong>
+		    </div>
+		</div>
+	</div>
+	</body>
+</html>
