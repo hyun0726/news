@@ -77,7 +77,30 @@ main{
 	flex-direction: column;
 	justify-content: center;
 	background-size: 100% 100%;
-	padding-left: 8vh;
 	align-items: center;
 	--swiper-navigation-size: 22px;
+}
+
+#main_content {
+  grid-area: main_content;
+}
+
+#weatherGraph {
+  grid-area: weatherGraph;
+}
+
+#weatherMap {
+  grid-area: weatherMap;
+}
+
+
+#main_div {
+	padding-left: 20vh;
+	padding-right: 20vh;
+  display: grid;
+  grid-template-areas:
+    "main_content weatherMap"
+    "weatherGraph  weatherMap";
+	    align-items: start;
+	grid-template-columns: 1fr 0.8fr;
 }

@@ -16,6 +16,7 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/current.css}"></link>
 		<link rel="stylesheet" type="text/css" th:href="@{/weatherTable.css}"></link>
 		<link rel="stylesheet" type="text/css" th:href="@{/weeklyDay.css}"></link>
+		<link rel="stylesheet" type="text/css" th:href="@{/weatherMap.css}"></link>
 	</head>
 	<body>
 		<!--
@@ -61,13 +62,15 @@
 					<div th:replace="~{weatherTable::weatherTableFragment}"></div>
 				</div>
 				<div th:replace="~{weatherGraph::weatherGraphFragment}"></div>
-				<div id="weekly">
-					<div id="weekly_title">
-						<span>주간예보</span>
-					</div>
-					<div th:replace="~{weeklyDay::weeklyFragment}"></div>
-					<div th:replace="~{weeklyScroll::weeklyScrollFragment}"></div>
+				<div th:replace="~{weatherMap::weatherMapFragment}">
 				</div>
+			</div>
+			<div id="weekly">
+				<div id="weekly_title">
+					<span>주간예보</span>
+				</div>
+				<div th:replace="~{weeklyDay::weeklyFragment}"></div>
+				<div th:replace="~{weeklyScroll::weeklyScrollFragment}"></div>
 			</div>
 		</main>
 		<!-- footer -->
