@@ -76,7 +76,6 @@
 		<!-- footer -->
 		<footer></footer>
 	</body>
-	<script th:href="@{/js/getWeather.js}" type="text/javascript"></script>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script type="text/javascript">
 		const swiper = new Swiper('.swiper', {
@@ -92,61 +91,5 @@
 		  },
 
 		});
-		/**** 오늘 날짜 불러오기 ****/
-		const fullDate = new Date();
-		const alertDayLenth = (number) => {
-		  let dayNumber = JSON.stringify(number);
-		  if (dayNumber.length === 1) {
-		    dayNumber = 0 + dayNumber;
-		  }
-		  return dayNumber;
-		}
-
-		const year = JSON.stringify(fullDate.getFullYear());
-		const month = alertDayLenth(fullDate.getMonth() +1);
-		const day = alertDayLenth(fullDate.getDate());
-		const current_time = fullDate.getHours();
-		const full_date = [year, month, day,current_time,'00'].join("");	
-	
-
-
-		/* 단기 예보 조회 */
-
-		var url_Vilage = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst'; /*URL*/
-		var apiKey = 'onln1BmvLIlFVm327173TOIgaWX%2BF5okicZQ6k0NeMNuIBU0yqyXrW3imG38ZZi9sggZ4a%2FsrSpNsdV15%2FnjjQ%3D%3D';
-
-		var queryParams_Vilage = '?' + encodeURIComponent('serviceKey') + '='+apiKey; /*Service Key*/
-		queryParams_Vilage += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('100'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('ftype') + '=' + encodeURIComponent('ODAM'); /*ODAM: 동네예보실황 -VSRT: 동네예보초단기 -SHRT: 동네예보단기*/
-		queryParams_Vilage += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent('20240805'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent('0800'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('55'); /**/
-		queryParams_Vilage += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('127'); /**/
-
-		fetch(url_Vilage + queryParams_Vilage, {
-		}).then((response) => response.json())
-		.then((data) => console.log(data));
-
-
-		/* 초단기 예보 조회 */
-		var url_UltraSrt = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst'; /*URL*/
-		var queryParams_UltraSrt = '?' + encodeURIComponent('serviceKey') + '='+apiKey; /*Service Key*/
-		queryParams_UltraSrt += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('100'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent('20240805'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent('2000'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('55'); /**/
-		queryParams_UltraSrt += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('127'); /**/
-
-		fetch(url_UltraSrt + queryParams_UltraSrt, {
-		}).then((response) => response.json())
-		.then((data) => console.log(data));
-		
-		
-
-		
 	</script>
 </html>
