@@ -9,7 +9,7 @@
 	</select>
 	<insert id="insert">
 	INSERT INTO REGISTER VALUES(
-		SEQ_BOARD_IDX.NEXTVAL,
+		SEQ_REGISTER_ID.NEXTVAL,
 		#{id},
 		#{email},
 		#{pwd}
