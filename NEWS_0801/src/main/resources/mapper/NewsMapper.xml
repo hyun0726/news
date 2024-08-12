@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.news.mapper.NewsMapper">
-    <!-- 뉴스 아이템 저장 쿼리 -->
-   <!-- 뉴스 아이템 저장 쿼리 -->
-    <insert id="insertNews" >
-        INSERT INTO news 
-        VALUES (#{id}, #{title}, #{publisher}, #{author}, #{summary}, #{imageUrl}, #{publishedAt})
-    </insert>
+    <!-- 뉴스 ID로 뉴스 존재 여부 확인 -->
+  <select id="countById" parameterType="String" resultType="int">
+    SELECT COUNT(*) FROM news WHERE id = #{id}
+  </select>
 
-    <!-- 뉴스 아이템 조회 쿼리 -->
-    <select id="selectNewsById" parameterType="String" >
-        SELECT * FROM news WHERE id = #{id}
-    </select>
+  <!-- 뉴스 삽입 -->
+  <insert id="insertNews" parameterType="com.korea.news.dto.NewsDTO">
+    INSERT INTO news (id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword)
+    VALUES (#{id}, #{title}, #{publisher}, #{author}, #{summary}, #{imageUrl}, #{contentUrl}, #{publishedAt}, #{keyword})
+  </insert>
+
+  <!-- 뉴스 ID로 뉴스 조회 -->
+  <select id="findById" parameterType="String" resultType="com.korea.news.dto.NewsDTO">
+    SELECT id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword  FROM news WHERE id = #{id}
+  </select>
+
+  <!-- 키워드만 조회  -->
+  <select id="findKeywordById" parameterType="String" resultType="String">
+    SELECT keyword
+    FROM news
+    WHERE id = #{id}
+</select>
+
 </mapper>
 
 

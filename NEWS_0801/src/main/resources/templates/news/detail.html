@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>YKP</title>
+    <link rel="stylesheet" th:href="@{/home-header.css}">
+    <link rel="stylesheet" th:href="@{/detail.css}">
+</head>
+<body>
+	    <div th:replace="~{header::headerFragment}"></div>
+
+    
+    <!-- 상세뉴스 -->
+    <div class="container">
+    <!-- 왼쪽박스 -->
+    	<div class="detail-box-left">
+    		<!-- 위쪽박스 -->
+    		<div class="detail-top">
+    		
+    		    <p th:text="${news.publisher}">출판사</p>
+    		 
+    		    <hr class="detail-line">
+    		 
+      		    <h1 th:text="${news.title}">제목</h1>
+       		 
+       		    <p th:text="${news.author}" >저자</p>
+       		    <p th:text="${#dates.format(news.publishedAt, 'yyyy-MM-dd HH:mm')}">발행일</p>
+       		    <img th:src="${news.imageUrl}" alt="이미지">
+      		    <a th:text="${news.summary}" class="detail-summary">요약</a>
+      		    
+      		    <!-- 텍스트 크기 조절 버튼 -->
+				<div class="text-controls">
+    				<button id="size-font" class="btn-control">A</button>
+ 					<a th:href="${news.contentUrl}" title="기사원문" class="btn-link">
+        				<img src="/img/link-green.png" >
+    				</a>    				
+				</div>
+      		    
+   		    </div>
+   			 
+   		    <!-- 아래박스 -->
+   		    <div class="detail-bottom">
+   		         <h1>댓글</h1>
+
+    		<!-- 댓글 목록 -->
+   			 <div th:each="comment : ${comments}" class="comment">
+      		  <p><strong th:text="${comment.author}">작성자</strong></p>
+       		 <p th:text="${comment.content}">댓글 내용</p>
+       		 <p class="comment-date" th:text="${#dates.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
+       		 <hr class="comment-separator">
+  		 	 </div>
+
+  		  <!-- 댓글 작성 폼 -->
+    		<div class="comment-form">
+       		 <h2>댓글 작성</h2>
+       		 <form action="/news/{id}/comment" method="post">
+          		  <input type="hidden" name="newsId" th:value="${news.id}">
+           		 <div class="form-group">
+             		   <label for="author">작성자:</label>
+              		  <input type="text" id="author" name="author" class="form-control" required>
+            		</div>
+           		 <div class="form-group">
+              		  <label for="content">댓글:</label>
+              		  <textarea id="content" name="content" class="form-control" rows="4" required></textarea>
+           		 </div>
+            		<button type="submit" class="btn btn-primary">댓글 작성</button>
+        		</form>
+   		 </div>
+   		    </div>
+        </div>
+
+        <!--오른쪽 박스 -->
+  	    <div class="detail-box-right">
+    	    <p>관련 뉴스</p>
+   		    <hr class="detail-line">
+    
+   		    <div th:each="related, iterStat : ${relatedNews}" class="small-box">
+       		    <div class="small-box-img">
+       		        <img th:src="${related.imageUrl}" alt="이미지">
+       		    </div>
+      		    <div class="box-text">
+       		        <h2 onclick="saveNews(this)" th:attr="data-id=${related.id}" th:text="${related.title.length() > 50 ? related.title.substring(0, 50) + '...' : related.title}">제목</h2>
+                </div>
+        	  
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+	function saveNews(f) {
+	    let newsId = f.getAttribute('data-id');
+	    console.log('News ID:', newsId);  // 콘솔에 ID 값 출력
+	    window.location.href = '/news/detail/' + newsId;
+	}
+	
+	let $content = $(".detail-summary"); // 글자 크기를 조정할 영역 선택
+    let $sizeButton = $("#size-font"); // 버튼 선택
+
+    let isLargeFont = false; // 글자가 확대되었는지 여부를 추적하는 변수
+    let normalFontSize = 1.1; // 기본 폰트 크기 설정
+    let largeFontSize = 1.5; // 확대된 폰트 크기 설정
+
+    $sizeButton.on("click", function() {     
+        
+        if (isLargeFont) {
+            $content.css("font-size", normalFontSize + "em"); // 글자 크기를 기본 크기로 설정
+            $sizeButton.text("A"); // 버튼 텍스트를 "A"로 변경
+            isLargeFont = false; // 상태를 토글
+        } else {
+            $content.css("font-size", largeFontSize + "em"); // 글자 크기를 확대된 크기로 설정
+            $sizeButton.text("a"); // 버튼 텍스트를 "a"로 변경
+            isLargeFont = true; // 상태를 토글
+        }
+
+    });
+</script>
+</html>

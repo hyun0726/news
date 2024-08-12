@@ -1,32 +1,31 @@
 package com.korea.news.service;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korea.news.dao.NewsDAO;
-import com.korea.news.list.NewsItem;
-import com.korea.news.list.NewsResponse;
-import com.korea.news.vo.NewsVO;
+import com.korea.news.dto.NewsDTO;
+import com.korea.news.dto.NewsItem;
+import com.korea.news.dto.NewsResponse;
+import com.korea.news.mapper.NewsMapper;
+import com.korea.news.util.TimeUtils;
 
 @Service
 public class NewsService {
-	final NewsDAO newsDAO;
 
-    private static final Logger logger = LoggerFactory.getLogger(NewsService.class);
+    private final RestTemplate restTemplate;
+    private final NewsMapper newsMapper;
 
     @Value("${deepsearch.api.url}")
     private String apiUrl;
@@ -34,17 +33,13 @@ public class NewsService {
     @Value("${deepsearch.api.key}")
     private String apiKey;
 
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-
     @Autowired
-    public NewsService(NewsDAO newsDAO, RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.newsDAO = newsDAO;
+    public NewsService(RestTemplate restTemplate, NewsMapper newsMapper) {
         this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
+        this.newsMapper = newsMapper;
     }
 
-    public List<NewsItem> fetchNews(String keyword) {
+    public List<NewsDTO> fetchNews(String keyword) {
         URI uri = UriComponentsBuilder
                 .fromUriString(apiUrl)
                 .path("/v1/articles")
@@ -54,32 +49,60 @@ public class NewsService {
                 .build()
                 .toUri();
 
-        RequestEntity<Void> req = RequestEntity
-                .get(uri)
-                .build();
-
-        ResponseEntity<String> resp;
-        NewsResponse resultVO = null;
-
         try {
-            resp = restTemplate.exchange(req, String.class);
-            logger.info("Response Status: {}", resp.getStatusCode());
-            logger.info("Response Body: {}", resp.getBody());
-            resultVO = objectMapper.readValue(resp.getBody(), NewsResponse.class);
-        } catch (JsonMappingException e) {
-            logger.error("JSON Mapping Exception: ", e);
-        } catch (JsonProcessingException e) {
-            logger.error("JSON Processing Exception: ", e);
+            NewsResponse response = restTemplate.getForObject(uri, NewsResponse.class);
+            if (response != null && response.getData() != null) {
+                return response.getData().stream()
+                        .map(this::convertToDTO)
+                        .collect(Collectors.toList());
+            }
         } catch (Exception e) {
-            logger.error("Exception: ", e);
+            System.out.println("Error fetching news: " + e.getMessage());
         }
 
-        if (resultVO == null || resultVO.getData() == null) {
-            logger.warn("No data found in the response or response is null");
-            return Collections.emptyList(); // 빈 리스트 반환
+        return Collections.emptyList();
+    }
+
+    @Transactional
+    public void saveAllNews(List<NewsDTO> newsList, String keyword) {
+        for (NewsDTO news : newsList) {
+            news.setKeyword(keyword);  
+            int count = newsMapper.countById(news.getId());
+            if (count == 0) {
+                newsMapper.insertNews(news);  
+            }
         }
-
-        return resultVO.getData();
+    }
+    public NewsDTO findById(String newsId) {
+        return newsMapper.findById(newsId);
     }
 
+
+    private NewsDTO convertToDTO(NewsItem item) {
+        NewsDTO dto = new NewsDTO();
+        dto.setId(item.getId());
+        dto.setTitle(item.getTitle());
+        dto.setPublisher(item.getPublisher());
+        dto.setAuthor(item.getAuthor());
+        dto.setSummary(item.getSummary());
+        dto.setImageUrl(item.getImageUrl());
+        dto.setContentUrl(item.getContentUrl());
+        dto.setPublishedAt(item.getPublishedAt());
+
+     // API에서 받은 시간을 9시간 전으로 변환
+        LocalDateTime publishedAtMinus9Hours = TimeUtils.subtract9Hours(item.getPublishedAt());
+
+        // 변환된 시간을 저장 (DB에 저장할 시간)
+        dto.setPublishedAt(Date.from(publishedAtMinus9Hours.atZone(ZoneId.systemDefault()).toInstant()));
+
+        // 시간 계산 로직을 유틸리티 클래스로 위임
+        String publishedAtAgo = TimeUtils.calculateTimeAgo(dto.getPublishedAt());
+        dto.setPublishedAtAgo(publishedAtAgo);
+
+        return dto;
     }
+    
+    public String findKeywordById(String newsId) {
+        return newsMapper.findKeywordById(newsId);
+    }
+}

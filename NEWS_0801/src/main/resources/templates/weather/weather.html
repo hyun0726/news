@@ -19,58 +19,25 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/weatherMap.css}"></link>
 	</head>
 	<body>
-		<!--
-		<header th:replace="~{header::headerFragment}"></header>
-		-->
-		    <hr class="line">
-		    <div class="header-top">
-		        <div class="h-left">
-		            <span th:text="${currentDate}"></span>
-		        </div>
-		        <div class="h-center">
-		            <div class="logo-box">
-		                <span class="logo-text">Y</span>
-		                <span class="logo-text">K</span>
-		                <span class="logo-text">P</span>
-		            </div>
-		        </div>
-				<div class="h-right">
-				    <a href="/news/login" class="link">로그인</a>
-				    <a href="/news/register" class="link">회원가입</a>
-				</div>
-		    </div>
-		    <hr class="line">
-		    <div class="header-center">
-		        <div class="center">
-		            <img src="/img/2024logo.gif" class="img">
-		        </div>
-		    </div>
+	    <div th:replace="~{header::headerFragment}"></div>
 
-		<hr class="line">
-		<div class="header-bottom">
-		    <nav class="menu-bar">
-		        <a href="/news/home" class="menu-link">뉴스</a>
-		        <a href="/news/home#entertainments-section" class="menu-link">연예</a>
-		        <a href="/news/home#sports-section" class="menu-link">스포츠</a>
-		        <a href="/news/weather" class="menu-link">날씨</a>
-		    </nav>
-		</div>
+	
 		<main>
 			<div id="main_div">
 				<div id="main_content" style="display: flex;align-items: center; justify-content: center;">
-					<div th:replace="~{current::currentFragment}"></div>
-					<div th:replace="~{weatherTable::weatherTableFragment}"></div>
+					<div th:replace="~{weather/current::currentFragment}"></div>
+					<div th:replace="~{weather/weatherTable::weatherTableFragment}"></div>
 				</div>
-				<div th:replace="~{weatherGraph::weatherGraphFragment}"></div>
-				<div th:replace="~{weatherMap::weatherMapFragment}">
+				<div th:replace="~{weather/weatherGraph::weatherGraphFragment}"></div>
+				<div th:replace="~{weather/weatherMap::weatherMapFragment}">
 				</div>
 			</div>
 			<div id="weekly">
 				<div id="weekly_title">
 					<span>주간예보</span>
 				</div>
-				<div th:replace="~{weeklyDay::weeklyFragment}"></div>
-				<div th:replace="~{weeklyScroll::weeklyScrollFragment}"></div>
+				<div th:replace="~{weather/weeklyDay::weeklyFragment}"></div>
+				<div th:replace="~{weather/weeklyScroll::weeklyScrollFragment}"></div>
 			</div>
 		</main>
 		<!-- footer -->
