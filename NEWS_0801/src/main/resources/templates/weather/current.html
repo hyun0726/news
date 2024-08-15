@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lagn="ko" 
+<html lang="ko" 
       xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
@@ -46,10 +46,8 @@
 						</g>
 						</svg>
 					</div>
-					<span style="position: relative;
-					top: 50px;
-					left: 50px;
-					font-size: 50px;">27.2°</span>
+					
+					<span id="cnt_bt" style="position: relative; top: 50px; left: 50px; font-size: 50px;">27.2°</span>
 				</div>
 				<div class="summary">
 					<span class="weather_span" style="display: none;">맑음</span>
@@ -58,8 +56,7 @@
 					<div>
 						<span style="display: none;">"낮아짐"</span>
 						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30" height="30" viewBox="0 0 256 256" xml:space="preserve">
-						<defs>
-						</defs>
+						
 						<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
 							<path d="M 79.079 59.51 c -0.537 -0.63 -1.483 -0.708 -2.114 -0.171 L 46.5 85.255 V 1.5 C 46.5 0.671 45.829 0 45 0 s -1.5 0.671 -1.5 1.5 v 83.755 L 13.035 59.339 c -0.63 -0.536 -1.577 -0.461 -2.114 0.171 c -0.537 0.631 -0.46 1.577 0.17 2.114 l 32.938 28.019 c 0.016 0.014 0.038 0.019 0.054 0.032 c 0.09 0.07 0.182 0.138 0.288 0.187 c 0.026 0.012 0.053 0.016 0.079 0.026 c 0.032 0.013 0.063 0.022 0.095 0.032 C 44.694 89.968 44.847 90 45 90 c 0 0 0 0 0 0 s 0 0 0 0 c 0.153 0 0.306 -0.032 0.455 -0.08 c 0.032 -0.01 0.063 -0.019 0.094 -0.032 c 0.026 -0.01 0.053 -0.015 0.079 -0.027 c 0.106 -0.049 0.198 -0.117 0.288 -0.187 c 0.017 -0.013 0.038 -0.018 0.054 -0.032 l 32.937 -28.019 C 79.539 61.087 79.616 60.141 79.079 59.51 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
 						</g>
@@ -68,6 +65,120 @@
 				</div>
 			</div>
 			<script type="text/javascript" th:src="@{/getCrnTime.js}"></script>
+			<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+			<script th:href="@{/weatherMapJS.js}"></script>
+			<script type="text/javascript">
+
+				let $cnt_bt = $("#cnt_bt"); // span선택
+				/* api key */
+
+				const apiKey = 'onln1BmvLIlFVm327173TOIgaWX%2BF5okicZQ6k0NeMNuIBU0yqyXrW3imG38ZZi9sggZ4a%2FsrSpNsdV15%2FnjjQ%3D%3D';
+				const url_UltraSrtNcst = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst'; /*초단기 실황 조회 URL*/
+
+
+				const now = moment();
+
+				const todayMoment = moment();
+				const full_date = todayMoment.format('YYYYMMDD');//현재날짜
+				const twoHourAgo = moment().subtract(2,"hours").format('HH00'); //두시간전
+
+
+
+
+				/* 현재 지역 날씨 */
+				const regionCurrent = {region:'부평구 부평동',x:'55',y:'125'};
+
+
+				let dataArray = [];
+				let dataArrayRe = [];
+
+				/* 현재 지역 날씨 실황 가져오는 함수 */
+				const result = (full_date,twoHourAgo,regionCurrent,apiKey) => {
+
+					var queryParams_UltraSrtNcst = '?' + encodeURIComponent('serviceKey') + '='+apiKey; /*Service Key*/
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); 
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('100'); 
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON');
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent(full_date); 
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent(twoHourAgo); 
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent(regionCurrent.x);
+					queryParams_UltraSrtNcst += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent(regionCurrent.y); 
+					fetch(url_UltraSrtNcst + queryParams_UltraSrtNcst, {
+						}).then((response) => response.json())
+						.then((data) =>
+								{
+									dataArray = [...(data.response.body.items.item)];
+									dataArrayRe = [{'x' : dataArray[0].nx, 'y' : dataArray[0].ny}];
+									dataArray.forEach((i)=> 
+									dataArrayRe = [...dataArrayRe, 
+										{
+											'category':i.category,
+											'obsrValue':i.obsrValue
+										}]); // 좌표포함 data
+
+									const btResult = dataArrayRe.filter((object) => object.category == 'T1H');
+
+									$(cnt_bt).text(btResult[0].obsrValue); //현재온도
+								}
+							);
+				};
+
+				result(full_date,twoHourAgo,regionCurrent,apiKey);
+
+				const yesterdayMoment = todayMoment.clone().subtract(1, 'days').format('YYYYMMDD');// 어제 날짜
+
+				//result(yesterdayMoment,twoHourAgo,regionCurrent,apiKey);
+
+				/*
+				const tomorrowMoment = todayMoment.clone().add(1, 'days');
+				console.log(tomorrowMoment.format('YYYY-MM-DD')); // 내일 날짜 출력
+				const oneMonthAgoMoment = todayMoment.clone().subtract(1, 'months');
+				console.log(oneMonthAgoMoment.format('YYYY-MM-DD')); // 한 달 전 날짜 출력
+				const oneYearAgoMoment = todayMoment.clone().subtract(1, 'years');
+				console.log(oneYearAgoMoment.format('YYYY-MM-DD')); // 일 년 전 날짜 출력
+				*/
+
+				/* 어제 온도와 현재 온도 차이*/
+
+
+
+				//result(full_date,twoHourAgo,regionCurrent,apiKey);
+
+				//const response = await fetch(url_UltraSrtNcst + returnURL);
+				//const result = await response.json();
+				//console.log(result);
+
+				/*
+				
+				fetch(url_UltraSrtNcst + returnURL, {
+				}).then((response) => response.json())
+				.then((data) =>
+						{
+							dataArray = [...(data.response.body.items.item)];
+							dataArrayRe = [{'x' : dataArray[0].nx, 'y' : dataArray[0].ny}];
+							dataArray.forEach((i)=> 
+							dataArrayRe = [...dataArrayRe, 
+								{
+									'category':i.category,
+									'obsrValue':i.obsrValue
+								}]); // 좌표포함 data
+						}
+					);
+				
+				Ck_crt_local_weather(full_date,twoHourAgo,regionCurrent,apiKey);
+				
+				console.log(dataArrayRe);
+				*/
+				//pageMenu변수에 controller에서 넘어온 pageMenu를 대입한다.
+				//let pageMenu = /*[[${pageMenu}]]*/""
+				//pageMenu라는 id를 가진 div에 pageMenu값 넣기
+				//$("#pageMenu").html(pageMenu); /* javascript */
+				/*[{…}, {…}, 'PTY(강수형태)', '0(맑음)', 'REH(습도)', '54',
+				'RN1(1시간 강수량)', '0', 'T1H(기온)', '34.8',
+				'UUU', '1.2', 'VEC(풍향)', '247',
+				'VVV', '0.5', 'WSD(풍속)', '1.3'] */// 풍향제외
+			</script>
 		</div>
 	</body>
 </html>
