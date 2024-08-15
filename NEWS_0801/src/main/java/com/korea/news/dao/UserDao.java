@@ -12,16 +12,16 @@ public class UserDao {
 	
 	final UserMapper userMapper;
 	
-	public UserVO loginCheck(String id) {
-		return userMapper.loginCheck(id);
+	public UserVO loginCheck(String userid) {
+		return userMapper.loginCheck(userid);
 	}
 	
 	public int insert(UserVO vo) {
 		 return userMapper.insert(vo);
 	}
 
-	public UserVO idCheck(String id) {
-		return userMapper.idCheck(id);
+	public UserVO idCheck(String userid) {
+		return userMapper.idCheck(userid);
 	}
 
 	

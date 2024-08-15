@@ -1,5 +1,6 @@
 package com.korea.news.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,17 +14,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.news.dto.NewsDTO;
+import com.korea.news.service.CommentService;
 import com.korea.news.service.LoginService;
 import com.korea.news.service.NewsService;
 import com.korea.news.util.TimeUtils;
+import com.korea.news.vo.DaegulVO;
 import com.korea.news.vo.UserVO;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -34,9 +39,14 @@ public class NewsController {
 
 	private final NewsService newsService;
 	private final LoginService loginService;
+	private final CommentService commentService;
 	
 	@Autowired
 	HttpSession session;
+	
+	@Autowired
+	HttpServletRequest request;
+
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -77,11 +87,16 @@ public class NewsController {
     public String detail(@PathVariable("id") String newsId, Model model) {
         // 사용자 ID를 세션에서 가져와 모델에 추가
         String userId = (String) session.getAttribute("userId");
+        System.out.println("User ID from session: " + userId);  
         model.addAttribute("userId", userId);
 
         // 1. newsId로 뉴스 정보 가져오기
         NewsDTO news = newsService.findById(newsId);
-        model.addAttribute("news", news);       
+        model.addAttribute("news", news);
+        
+        // 댓글 목록 가져오기
+        List<DaegulVO> comments = commentService.findCommentsByNewsId(newsId);
+        model.addAttribute("comments", comments);
         
         // 2. 뉴스의 키워드 가져오기
         String keyword = newsService.findKeywordById(newsId);
@@ -105,8 +120,42 @@ public class NewsController {
 
         return "news/detail";
     }
+   // 댓글 작성
+    @PostMapping("/{id}/comment")
+    public RedirectView postComment(@PathVariable("id") String newsId, DaegulVO vo) {
 
-    //로그인화면
+        String userId = (String) session.getAttribute("userId");
+        String ip = (String) session.getAttribute("userIp");
+
+        vo.setUserid(userId);
+        vo.setIp(ip);
+
+        int res = commentService.insert(vo);
+        return new RedirectView("/news/detail/" + newsId);
+    }
+    //대댓글 작성
+    @PostMapping("/{id}/reply")
+    public RedirectView postReply(@PathVariable("id") String newsId,
+                                  DaegulVO vo,
+                                  @RequestParam("num") int num) {
+        String userId = (String) session.getAttribute("userId");
+        String ip = (String) session.getAttribute("userIp");
+
+        DaegulVO base_vo = commentService.selectOne(num);
+        int res = commentService.update_step(base_vo);
+
+        vo.setUserid(userId);
+        vo.setIp(ip);
+        vo.setRef(base_vo.getRef());
+        vo.setStep(base_vo.getStep() + 1);
+        vo.setDepth(base_vo.getDepth() + 1);
+
+        res = commentService.reply(vo);
+        return new RedirectView("/news/detail/" + newsId);
+    }
+
+
+	//로그인화면
   	@GetMapping("/login")
   	 public String login(@ModelAttribute("vo") UserVO vo, Model model) {
   		TimeUtils.CurrentDate(model);
@@ -124,16 +173,17 @@ public class NewsController {
 			e.printStackTrace();
 		}
 		
-		String id = data.get("id");
+		String userid = data.get("userid");
 		String pwd = data.get("pwd");
 		
-		UserVO vo = loginService.loginCheck(id);
+		UserVO vo = loginService.loginCheck(userid);
 		
 		if(vo == null || !vo.getPwd().equals(pwd)) {
 			return "{\"param\":\"no\"}";
 		}
 		
-		session.setAttribute("userId", vo.getId());
+		session.setAttribute("userId", vo.getUserid());
+		session.setAttribute("userIp", request.getRemoteAddr()); 
 		return "{\"param\":\"yes\"}";
 	}
   	
@@ -153,17 +203,17 @@ public class NewsController {
   	 
   	@PostMapping("/check_id")
 	@ResponseBody
-	public String check_id(@RequestBody String id) {
+	public String check_id(@RequestBody String userid) {
 		ObjectMapper om = new ObjectMapper();
 		Map<String, String> data =null;
 		try {
-			data = om.readValue(id, new TypeReference<Map<String, String>>(){});
+			data = om.readValue(userid, new TypeReference<Map<String, String>>(){});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		id = data.get("id");
+		userid = data.get("userid");
 	
-		UserVO vo = loginService.idCheck(id);
+		UserVO vo = loginService.idCheck(userid);
 
 		if(vo==null) {
 			return "{\"param\":\"yes\"}";
@@ -180,6 +230,77 @@ public class NewsController {
 		}
 		return null;
 	}
+  	
+  	@PostMapping("/edit")
+  	@ResponseBody
+  	public Map<String, String> editComment(@RequestBody Map<String, String> data) {
+  	    Map<String, String> response = new HashMap<>();
+  	    try {
+  	        int intNum = Integer.parseInt(data.get("num"));
+  	        String updatedContent = data.get("content");
+
+  	        // 현재 로그인한 사용자의 ID를 가져옴
+  	      String userId = (String) session.getAttribute("userId");
+
+  	        // 수정할 댓글 객체를 조회
+  	        DaegulVO vo = commentService.selectOne(intNum);
+
+  	        if (vo != null) {
+  	            // 로그인한 사용자와 댓글 작성자가 같은지 확인
+  	            if (vo.getUserid().equals(userId)) {
+  	                // 댓글 내용 수정
+  	                vo.setContent(updatedContent);
+  	                int result = commentService.updateComment(vo); // updateComment 메서드로 DB에 업데이트
+
+  	                if (result > 0) {
+  	                    response.put("param", "success");
+  	                } else {
+  	                    response.put("param", "fail");
+  	                }
+  	            } 
+  	        } 
+  	    } catch (Exception e) {
+  	        e.printStackTrace();
+  	        response.put("param", "error");
+  	    }
+  	    return response;
+  	}
+
+
+  	
+  	//삭제
+  	@PostMapping("/delete")
+  	@ResponseBody
+  	public Map<String, String> delete(@RequestBody Map<String, String> data) {
+  	    Map<String, String> response = new HashMap<>();
+  	    try {
+  	        int num = Integer.parseInt(data.get("num"));
+  	        DaegulVO vo = commentService.selectOne(num);
+  	      String userId = (String) session.getAttribute("userId");
+  	       
+  	        
+  	      if (vo != null) {
+	            // 로그인한 사용자와 댓글 작성자가 같은지 확인
+	            if (vo.getUserid().equals(userId)) {
+	           
+	                int result = commentService.delete(vo);
+
+	                if (result > 0) {
+	                    response.put("param", "success");
+	                } else {
+	                    response.put("param", "fail");
+	                }
+	            } 
+	        } 
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.put("param", "error");
+	    }
+	    return response;
+	}
+
+
+
   	 
   	// 날씨 화면
   	@GetMapping("/weather")

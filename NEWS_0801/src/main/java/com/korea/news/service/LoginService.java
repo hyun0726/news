@@ -13,16 +13,16 @@ public class LoginService {
 
 	final UserDao userDao;
 	
-	public UserVO loginCheck(String id) {
-		return userDao.loginCheck(id);
+	public UserVO loginCheck(String userid) {
+		return userDao.loginCheck(userid);
 	}
 	
 	public int insert(UserVO vo) {		
 		return userDao.insert(vo);
 	}
 
-	public UserVO idCheck(String id) {
-		return userDao.idCheck(id);
+	public UserVO idCheck(String userid) {
+		return userDao.idCheck(userid);
 	}
 
 	

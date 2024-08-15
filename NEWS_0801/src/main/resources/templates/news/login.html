@@ -17,7 +17,7 @@
             </div>
             <div class="title_div">
                 <div class="auth_form">
-                    <input th:field="*{id}" type="text" class="input_style" placeholder="아이디를 입력하세요." id="id">
+                    <input th:field="*{userid}" type="text" class="input_style" placeholder="아이디를 입력하세요." id="userid">
                     <input th:field="*{pwd}" type="password" class="input_style" placeholder="비밀번호를 입력하세요." id="pwd">
                 </div>
                 <button class="auth_btn" id="login" type="button">로그인</button>
@@ -34,7 +34,7 @@
 <script th:inline="javascript">
     
         $("#login").on("click", function(){
-            let $id = $("#id").val();
+            let $id = $("#userid").val();
             let $pwd = $("#pwd").val();
             
             if($id == ''){
@@ -50,7 +50,7 @@
             $.ajax({
                 url:"/news/access",
                 type:"POST",
-                data : JSON.stringify({id : $id , pwd : $pwd}),
+                data : JSON.stringify({userid : $id , pwd : $pwd}),
                 dataType : 'json',
                 contentType : 'application/json; charset=utf-8',
                 success : function(data){

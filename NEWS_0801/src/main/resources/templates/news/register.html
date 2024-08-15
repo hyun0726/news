@@ -21,7 +21,7 @@
 			  <form class="auth_form" th:action="@{/news/join}" th:object="${vo}" method="post">
 				<div class="auth_div">
 					<label class="auth_label" for="id">ID</label>
-					<input th:field="*{id}" type="text" class="input_style" placeholder="ID을 입력하세요." id="id">
+					<input th:field="*{userid}" type="text" class="input_style" placeholder="ID을 입력하세요." id="userid">
 				</div>
 				<div class="auth_div">
 					<label class="auth_label" for="email">이메일</label>
@@ -57,7 +57,7 @@
    	 e.preventDefault(); // 기본 폼 제출 동작을 막습니다.
 
    	 // 아이디 값을 가져옵니다.
-   	 let $id = $("#id").val();
+   	 let $id = $("#userid").val();
 
   	  if ($id == '') {
    	     alert("ID를 입력하세요");
@@ -67,7 +67,7 @@
    	 $.ajax({
     	   url: "/news/check_id",
      	   type: "POST",
-     	   data: JSON.stringify({ id: $id }),
+     	   data: JSON.stringify({ userid: $id }),
       	   dataType: 'json',
       	   contentType: 'application/json; charset=utf-8',
        	   success: function(data) {
@@ -87,13 +87,13 @@
 });
 
 	// id 입력 변경 시 중복 체크 상태 초기화
-	$("#id").on('input', function() {
+	$("#userid").on('input', function() {
   	  b_idCheck = false; // 아이디가 변경되면 중복 체크 상태를 초기화합니다.
 	});
 
 	// 폼이 제대로 채워졌는지 확인하는 함수
 	function checkFormCompletion() {
-		let $id = $("#id").val(); // 입력된 값을 다시 가져옵니다.
+		let $id = $("#userid").val(); // 입력된 값을 다시 가져옵니다.
 		let $email = $("#email").val();
 		let $pwd = $("#pwd").val();
 		let $pwd_re = $("#pwd_re").val();

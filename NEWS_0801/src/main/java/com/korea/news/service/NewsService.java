@@ -105,4 +105,6 @@ public class NewsService {
     public String findKeywordById(String newsId) {
         return newsMapper.findKeywordById(newsId);
     }
+
+	
 }
