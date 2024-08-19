@@ -28,11 +28,14 @@ queryParams_Vilage += '&' + encodeURIComponent('base_date') + '=' + encodeURICom
 queryParams_Vilage += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent(twoHourAgo); /*단기 예보는 아침 8시*/
 queryParams_Vilage += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('55'); /**/
 queryParams_Vilage += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('127'); /**/
-/*
+
 fetch(url_Vilage + queryParams_Vilage, {
 }).then((response) => response.json())
-.then((data) => console.log(data));
-*/
+.then((data) => {
+	console.log(data);
+}
+);
+
 
 /* 초단기 실황 조회 (지역)*/
 

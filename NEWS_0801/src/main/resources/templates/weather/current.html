@@ -87,8 +87,6 @@
 				const twoHourAgo = moment().subtract(2,"hours").format('HH00'); //두시간전
 				
 
-				
-			
 				/* 현재 지역 날씨 */
 				const regionCurrent = {region:'부평구 부평동',x:'55',y:'125'};
 
@@ -121,7 +119,6 @@
 										}]); // 좌표포함 data
 										
 									const btResult = dataArrayRe.filter((object) => object.category == 'T1H');
-									
 									$(cnt_bt).text(btResult[0].obsrValue); //현재온도
 								}
 							);
