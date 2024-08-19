@@ -8,6 +8,6 @@ public interface NewsMapper {
 	 int countById(String id);
 	 void insertNews(NewsDTO news);
 	 NewsDTO findById(String id);
-	String findKeywordById(String newsId);
+	String findsectionsById(String newsId);
 	
 }

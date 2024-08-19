@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" th:href="@{/home-body.css}">
+</head>
+<body>
+<div class="subscribe">
+<div class="news-card"  th:each="channel : ${channels}" >
+    <div class="header" >
+        <img th:src="@{'/img/' + ${channel.image}}" alt="Channel Image">
+        <div>
+            <div class="title" th:text="${channel.name}">Channel Name</div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="images" th:each="news, iterStat : ${newsData}" th:if="${iterStat.index < 2}">
+            <img th:src="${news.imageUrl}" alt="Article Image 1">
+            <h2 onclick="saveNews(this)" th:attr="data-id=${news.id}" th:text="${news.title.length() > 10 ? news.title.substring(0, 10) + '...' : news.title}">제목</h2>
+        </div>
+        <div class="title" th:each="news, iterStat : ${newsData}" th:if="${iterStat.index >= 2 && iterStat.index < 6}">
+            <h2 onclick="saveNews(this)" th:attr="data-id=${news.id}" th:text="${news.title.length() > 10 ? news.title.substring(0, 10) + '...' : news.title}">제목</h2>
+        </div>
+    </div>
+</div>
+</body>
+</html>

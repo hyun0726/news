@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" th:href="@{/home-body.css}">
+</head>
+<body>
+<div class="subscribe">
+<div class="news-card"  th:each="channel : ${channels}" >
+    <div class="header" >
+        <img th:src="@{'/img/' + ${channel.image}}" alt="Channel Image">
+        <div>
+            <div class="title" th:text="${channel.name}">Channel Name</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

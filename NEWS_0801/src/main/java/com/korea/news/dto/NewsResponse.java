@@ -1,19 +1,11 @@
 package com.korea.news.dto;
 
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-@Data
+@Getter
+@Setter
 public class NewsResponse {
-    private List<NewsItem> data;
-
-    
-    public List<NewsItem> getData() {
-        return data;
-    }
-
-    public void setData(List<NewsItem> data) {
-        this.data = data;
-    }
+    private List<NewsItem> data; // 'data'라는 필드에 List<NewsItem>이 포함됨
 }
-

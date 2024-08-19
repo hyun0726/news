@@ -8,18 +8,21 @@
 
   <!-- 뉴스 삽입 -->
   <insert id="insertNews" parameterType="com.korea.news.dto.NewsDTO">
-    INSERT INTO news (id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword)
-    VALUES (#{id}, #{title}, #{publisher}, #{author}, #{summary}, #{imageUrl}, #{contentUrl}, #{publishedAt}, #{keyword})
-  </insert>
+    INSERT INTO news (id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword, sections)
+    VALUES (#{id}, #{title}, #{publisher}, #{author}, #{summary}, #{imageUrl}, #{contentUrl}, #{publishedAt}, #{keyword}, 
+    #{sections, typeHandler=com.korea.news.mybatis.ListToStringTypeHandler})
+	</insert>
 
-  <!-- 뉴스 ID로 뉴스 조회 -->
-  <select id="findById" parameterType="String" resultType="com.korea.news.dto.NewsDTO">
-    SELECT id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword  FROM news WHERE id = #{id}
-  </select>
-
+	<!-- 뉴스 ID로 뉴스 조회 -->
+	<select id="findById" parameterType="String" resultType="com.korea.news.dto.NewsDTO">
+	    SELECT id, title, publisher, author, summary, imageurl, contenturl, publishedat, keyword, sections
+	    FROM news 
+	    WHERE id = #{id}
+	</select>
+ 
   <!-- 키워드만 조회  -->
-  <select id="findKeywordById" parameterType="String" resultType="String">
-    SELECT keyword
+  <select id="findsectionsById" parameterType="String" resultType="String">
+    SELECT sections
     FROM news
     WHERE id = #{id}
 </select>

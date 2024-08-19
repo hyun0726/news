@@ -1,8 +1,11 @@
 package com.korea.news.mybatis;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +39,10 @@ public class MybatisConfig {
 		
 		SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject();
 		sqlSessionFactory.getConfiguration().setMapUnderscoreToCamelCase(true);
+		
+		 // TypeHandler 등록
+	    sqlSessionFactory.getConfiguration().getTypeHandlerRegistry().register(List.class, JdbcType.VARCHAR, new ListToStringTypeHandler());
+
 		return sqlSessionFactory;
 	}
 }

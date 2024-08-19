@@ -42,14 +42,39 @@ public class NewsService {
     public List<NewsDTO> fetchNews(String keyword) {
         URI uri = UriComponentsBuilder
                 .fromUriString(apiUrl)
-                .path("/v1/articles")
-                .queryParam("keyword", keyword)
+                .path("/v1/articles/" + keyword)
                 .queryParam("api_key", apiKey)
                 .encode()
                 .build()
                 .toUri();
 
         try {
+            // NewsResponse로 응답을 받음
+            NewsResponse response = restTemplate.getForObject(uri, NewsResponse.class);
+            if (response != null && response.getData() != null) {
+                return response.getData().stream()
+                        .map(this::convertToDTO)
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching news: " + e.getMessage());
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<NewsDTO> fetchPublisher(String publisher) {
+        URI uri = UriComponentsBuilder
+                .fromUriString(apiUrl)
+                .path("/v1/articles")
+                .queryParam("keyword", "publisher:" + publisher)
+                .queryParam("api_key", apiKey)
+                .encode()
+                .build()
+                .toUri();
+
+        try {
+            // NewsResponse로 응답을 받음
             NewsResponse response = restTemplate.getForObject(uri, NewsResponse.class);
             if (response != null && response.getData() != null) {
                 return response.getData().stream()
@@ -73,10 +98,10 @@ public class NewsService {
             }
         }
     }
+
     public NewsDTO findById(String newsId) {
         return newsMapper.findById(newsId);
     }
-
 
     private NewsDTO convertToDTO(NewsItem item) {
         NewsDTO dto = new NewsDTO();
@@ -89,7 +114,7 @@ public class NewsService {
         dto.setContentUrl(item.getContentUrl());
         dto.setPublishedAt(item.getPublishedAt());
 
-     // API에서 받은 시간을 9시간 전으로 변환
+        // API에서 받은 시간을 9시간 전으로 변환
         LocalDateTime publishedAtMinus9Hours = TimeUtils.subtract9Hours(item.getPublishedAt());
 
         // 변환된 시간을 저장 (DB에 저장할 시간)
@@ -99,12 +124,13 @@ public class NewsService {
         String publishedAtAgo = TimeUtils.calculateTimeAgo(dto.getPublishedAt());
         dto.setPublishedAtAgo(publishedAtAgo);
 
+        dto.setSections(item.getSections());
+        
         return dto;
     }
-    
-    public String findKeywordById(String newsId) {
-        return newsMapper.findKeywordById(newsId);
-    }
 
-	
+
+	public String findsectionsById(String newsId) {
+		return newsMapper.findsectionsById(newsId);
+	}
 }

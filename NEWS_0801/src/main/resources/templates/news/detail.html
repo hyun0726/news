@@ -176,6 +176,7 @@
         if (!userId || userId == '') {
             alert("댓글을 작성하려면 로그인이 필요합니다.");
             location.href = "/news/login";
+            return; 
         } else if (content == '') { 
         	event.preventDefault();  // 폼 제출을 방지
 
@@ -196,6 +197,7 @@
 	    if (!userId || userId === '') {
 	        alert("댓글을 작성하려면 로그인이 필요합니다.");
 	        location.href = "/news/login";  // 로그인 페이지로 리다이렉트
+	        return; 
 	    } else if(content === '') {
 	        event.preventDefault();  // 폼 제출을 방지
 	    } else {

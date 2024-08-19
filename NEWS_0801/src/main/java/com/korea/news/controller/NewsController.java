@@ -1,11 +1,11 @@
 package com.korea.news.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,9 @@ import com.korea.news.dto.NewsDTO;
 import com.korea.news.service.CommentService;
 import com.korea.news.service.LoginService;
 import com.korea.news.service.NewsService;
+import com.korea.news.service.SubscriptionService;
 import com.korea.news.util.TimeUtils;
+import com.korea.news.vo.Channel;
 import com.korea.news.vo.DaegulVO;
 import com.korea.news.vo.UserVO;
 
@@ -37,50 +39,164 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/news")
 public class NewsController {
 
+	private final SubscriptionService subscriptionService;
 	private final NewsService newsService;
 	private final LoginService loginService;
 	private final CommentService commentService;
-	
-	@Autowired
-	HttpSession session;
-	
-	@Autowired
-	HttpServletRequest request;
+	private final HttpSession session;
+	private final HttpServletRequest request;
 
 
     @GetMapping("/home")
     public String home(Model model) {
-         // 사용자 ID를 세션에서 가져와 모델에 추가
-         String userId = (String) session.getAttribute("userId");
-         model.addAttribute("userId", userId);
+    	// 사용자 ID를 세션에서 가져와 모델에 추가
+        String userId = (String) session.getAttribute("userId");
+        System.out.println("User ID from session: " + userId);
         
-    	 List<NewsDTO> politics = newsService.fetchNews("속보").stream()
-                 .filter(news -> news.getImageUrl() != null && !news.getImageUrl().isEmpty())
-                 .collect(Collectors.toList());
-         List<NewsDTO> entertainments = newsService.fetchNews("연예").stream()
-                 .filter(news -> news.getImageUrl() != null && !news.getImageUrl().isEmpty())
-                 .collect(Collectors.toList());
-         List<NewsDTO> sports = newsService.fetchNews("스포츠").stream()
-                 .filter(news -> news.getImageUrl() != null && !news.getImageUrl().isEmpty())
-                 .collect(Collectors.toList());
-         
-         // 메인 화면에 표시할 뉴스 항목 선택
-         List<NewsDTO> selectedPolitics = politics.size() > 7 ? politics.subList(0, 7) : politics;
-         List<NewsDTO> selectedEntertainments = entertainments.size() > 6 ? entertainments.subList(0, 6) : entertainments;
-         List<NewsDTO> selectedSports = sports.size() > 6 ? sports.subList(0, 6) : sports;
+        // userIdx를 Integer 타입으로 가져오기
+        Integer userIdx = null;
 
-         // 선택된 뉴스 항목을 DB에 저장
-         newsService.saveAllNews(selectedPolitics, "속보");
-         newsService.saveAllNews(selectedEntertainments, "연예");
-         newsService.saveAllNews(selectedSports, "스포츠");
+        // 로그인이 되어있을 때만 userIdx를 가져옴
+        if (userId != null) {
+            userIdx = (Integer) session.getAttribute("userIdx");
+        }
+
+        System.out.println("User Index from session: " + userIdx);
         
-        model.addAttribute("politics", politics);
-        model.addAttribute("entertainments", entertainments);
-        model.addAttribute("sports", sports);
-        
-        TimeUtils.CurrentDate(model);
-        
-        return "news/home";
+        model.addAttribute("userId", userId);
+        model.addAttribute("userIdx",userIdx);
+
+         model.addAttribute("politics", getAndSaveNewsSection("politics", 7));
+         model.addAttribute("economy", getAndSaveNewsSection("economy", 6));
+         model.addAttribute("society", getAndSaveNewsSection("society", 6));
+         model.addAttribute("culture", getAndSaveNewsSection("culture", 6));
+         model.addAttribute("entertainment", getAndSaveNewsSection("entertainment", 6));
+
+         TimeUtils.CurrentDate(model);
+
+         List<Channel> channels = Arrays.asList(
+                 new Channel("JTBC", "JTBCNEWS.png"),
+                 new Channel("KBS", "KBSNEWS.png"),
+                 new Channel("MBC", "MBCNEWS.png"),
+                 new Channel("SBS", "SBSNEWS.jpg"),
+                 new Channel("YTN", "ytn.png"),
+                 new Channel("연합뉴스", "연합뉴스.png"),
+                 new Channel("연합뉴스TV", "연합뉴스TV.jpg"),
+                 new Channel("한국경제TV", "한국경제TV.png")
+             );
+             model.addAttribute("channels", channels);
+             
+             if (userIdx != null) {
+                 // 구독된 채널 목록을 가져옴
+                 List<String> subscribedChannelNames = subscriptionService.getSubscribedChannels(userIdx);
+                 
+                 // 각 구독된 채널에 대한 뉴스 항목을 포함한 채널 정보 생성
+                 List<Channel> subscribedChannels = subscribedChannelNames.stream()
+                     .map(channelName -> {
+                         Channel channel = channels.stream()
+                             .filter(c -> c.getName().equals(channelName))
+                             .findFirst()
+                             .orElse(null);
+                         
+                         if (channel != null) {
+                             // 해당 채널의 관련 뉴스 가져오기
+                             List<NewsDTO> relatedNews = newsService.fetchPublisher(channelName).stream()
+                                 .filter(news -> news.getImageUrl() != null && !news.getImageUrl().isEmpty())
+                                 .limit(6) // 최대 6개의 뉴스만 가져오기
+                                 .collect(Collectors.toList());
+                             
+                             // 뉴스가 있는 경우 저장
+                             channel.setRelatedNews(relatedNews);
+                             
+                             // 뉴스 DB에 저장
+                             newsService.saveAllNews(relatedNews, channelName);
+                         }
+                         
+                         return channel;
+                     })
+                     .filter(channel -> channel != null)
+                     .collect(Collectors.toList());
+
+                 // 구독된 채널 정보를 모델에 추가
+                 model.addAttribute("subscribedChannels", subscribedChannels);
+             }
+    
+             if (userIdx != null) {
+                 List<String> subscribedChannelNames = subscriptionService.getSubscribedChannels(userIdx);
+                 model.addAttribute("subscribedChannelNames", subscribedChannelNames);
+             }
+         return "news/home";    
+     }
+    @PostMapping("/unsubscribe")
+    @ResponseBody
+    public Map<String, Object> unsubscribe(@RequestParam("channelName") String channelName) {
+        Map<String, Object> response = new HashMap<>();
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId != null) {
+            // 세션에서 userIdx를 가져옴
+            Integer userIdx = (Integer) session.getAttribute("userIdx");
+
+            if (userIdx == null) {
+                // 세션에 userIdx가 없을 경우 처리
+                return Map.of("error", "User ID not found in session");
+            }
+
+            // 사용자가 채널 구독을 취소
+            subscriptionService.unsubscribeFromChannel(userIdx, channelName);
+
+            response.put("status", "unsubscribed");
+        } else {
+            // 세션에 userId가 없으면 로그인 페이지로 리다이렉트
+            response.put("error", "User not logged in");
+        }
+
+        return response;
+    }
+
+    @PostMapping("/subscribe")
+    @ResponseBody
+    public Map<String, Object> subscribe(@RequestParam("channelName") String channelName) {
+        Map<String, Object> response = new HashMap<>();
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId != null) {
+            // 세션에서 userIdx를 가져옴
+            Integer userIdx = (Integer) session.getAttribute("userIdx");
+
+            if (userIdx == null) {
+                // 세션에 userIdx가 없을 경우 처리
+                return Map.of("error", "User ID not found in session");
+            }
+
+            // 사용자가 채널을 구독
+            subscriptionService.subscribeToChannel(userIdx, channelName);
+
+            // 'publisher' 값을 사용하여 뉴스 데이터 가져오기 또는 구독 처리
+            List<NewsDTO> newsList = newsService.fetchPublisher(channelName).stream()
+                .filter(news -> news.getImageUrl() != null && !news.getImageUrl().isEmpty())
+                .collect(Collectors.toList());
+
+            // 필요한 경우, 다른 로직을 추가해 구독 상태를 처리
+            response.put("news", newsList.size() > 6 ? newsList.subList(0, 6) : newsList);
+            newsService.saveAllNews(newsList, channelName);
+        } else {
+            // 세션에 userId가 없으면 로그인 페이지로 리다이렉트
+            response.put("error", "User not logged in");
+        }
+
+        return response;
+    }
+    
+
+
+    private List<NewsDTO> getAndSaveNewsSection(String section, int limit) {
+        List<NewsDTO> news = newsService.fetchNews(section).stream()
+                .filter(newsItem -> newsItem.getImageUrl() != null && !newsItem.getImageUrl().isEmpty())
+                .collect(Collectors.toList());
+        List<NewsDTO> selectedNews = news.size() > limit ? news.subList(0, limit) : news;
+        newsService.saveAllNews(selectedNews, section);
+        return selectedNews;
     }
     	
     @GetMapping("/detail/{id}")
@@ -98,11 +214,11 @@ public class NewsController {
         List<DaegulVO> comments = commentService.findCommentsByNewsId(newsId);
         model.addAttribute("comments", comments);
         
-        // 2. 뉴스의 키워드 가져오기
-        String keyword = newsService.findKeywordById(newsId);
+        // 2. 뉴스의 sections 가져오기
+        String sections = newsService.findsectionsById(newsId);
         
         // 3. 키워드로 관련 뉴스 가져오기 (외부 API 호출)
-        List<NewsDTO> recommendedNews = newsService.fetchNews(keyword).stream()
+        List<NewsDTO> recommendedNews = newsService.fetchNews(sections).stream()
                 .filter(n -> n.getImageUrl() != null && !n.getImageUrl().isEmpty())
                 .collect(Collectors.toList());
 
@@ -110,7 +226,7 @@ public class NewsController {
         List<NewsDTO> selectedRecommendedNews = recommendedNews.size() > 10 ? recommendedNews.subList(0, 10) : recommendedNews;
 
         // 4. 추천 뉴스 저장
-        newsService.saveAllNews(selectedRecommendedNews, keyword);
+        newsService.saveAllNews(selectedRecommendedNews, sections);
         
         // 5. 추천 뉴스를 모델에 추가
         model.addAttribute("relatedNews", selectedRecommendedNews);
@@ -126,7 +242,12 @@ public class NewsController {
 
         String userId = (String) session.getAttribute("userId");
         String ip = (String) session.getAttribute("userIp");
-
+        
+        if (userId == null) {
+            // 로그인하지 않은 상태라면 로그인 페이지로 리다이렉트
+            return new RedirectView("/news/login");
+        }
+        
         vo.setUserid(userId);
         vo.setIp(ip);
 
@@ -141,6 +262,11 @@ public class NewsController {
         String userId = (String) session.getAttribute("userId");
         String ip = (String) session.getAttribute("userIp");
 
+        if (userId == null) {
+            // 로그인하지 않은 상태라면 로그인 페이지로 리다이렉트
+            return new RedirectView("/news/login");
+        }
+        
         DaegulVO base_vo = commentService.selectOne(num);
         int res = commentService.update_step(base_vo);
 
@@ -182,6 +308,7 @@ public class NewsController {
 			return "{\"param\":\"no\"}";
 		}
 		
+		session.setAttribute("userIdx", vo.getIdx());
 		session.setAttribute("userId", vo.getUserid());
 		session.setAttribute("userIp", request.getRemoteAddr()); 
 		return "{\"param\":\"yes\"}";
