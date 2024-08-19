@@ -1,0 +1,10 @@
+create sequence seq_register_idx;
+
+CREATE TABLE register (
+	idx number(3) primary key,      
+	userid varchar2(100),   
+	email varchar2(255),   
+	pwd varchar2(100)               
+	);
+
+
