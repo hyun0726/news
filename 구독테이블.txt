@@ -1,0 +1,9 @@
+CREATE SEQUENCE sub_id_seq;
+
+CREATE TABLE subscriptions (
+    sub_id number(5) primary key,         -- 구독의 고유 ID
+    user_idx number(3),                    -- 사용자 ID (register 테이블과 연관)
+    channel_name varchar2(100),           -- 채널 이름 (하드코딩된 채널 이름과 매칭)
+    subscribed_at date DEFAULT sysdate,   -- 구독한 날짜
+    FOREIGN KEY (user_idx) REFERENCES register(idx) -- register 테이블의 idx와 연관
+);

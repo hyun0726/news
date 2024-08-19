@@ -1,0 +1,16 @@
+--시퀀스
+create sequence seq_daegul_number;
+
+--게시판테이블
+CREATE TABLE daegul(
+	num number(3) primary key,      --게시판 일련번호
+	userid varchar2(100),   not null,            --작성자 
+	id varchar2(100) not null,         --뉴스id
+	content CLOB,                      --내용
+	ip varchar2(100),                  --ip
+	regdate date,                      --작성일자
+	--계층형 게시판을 운영하기 위한 추가정보들
+	ref int,                           --기준글번호
+	step int,                          --댓글순서
+	depth int                          --댓글의깊이
+);
