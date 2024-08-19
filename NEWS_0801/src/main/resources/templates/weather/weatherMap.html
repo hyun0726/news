@@ -12,53 +12,6 @@
         <div id="weatherMap" th:fragment="weatherMapFragment">
             <h2>전국날씨</h2>
             <ul class="weekly_list">
-                    <li class="item">
-                        <button type="button" class="button">
-                            <span class="day">목</span>
-                            <span class="date">오늘</span>
-                        </button>
-                    </li>
-                    <li class="item">
-                        <button type="button" class="button">
-                            <span class="day">금</span>
-                            <span class="date">8.09</span>
-                        </button>
-                    </li>
-                    
-                    <li class="item">
-                        <button type="button" class="button">
-                            <span class="day">토</span>
-                            <span class="date">8.10</span>
-                        </button>
-                    </li>
-                    
-                    <li class="item ">
-                        <button type="button">
-                            <span class="day">일</span>
-                            <span class="date">8.11</span>
-                        </button>
-                    </li>
-                    
-                    <li class="item ">
-                        <button type="button" class="button">
-                            <span class="day">월</span>
-                            <span class="date">8.12</span>
-                        </button>
-                    </li>
-                    
-                    <li class="item ">
-                        <button type="button" class="button">
-                            <span class="day">화</span>
-                            <span class="date">8.13</span>
-                        </button>
-                    </li>
-                    
-                    <li class="item ">
-                        <button type="button" class="button">
-                            <span class="day">수</span>
-                            <span class="date">8.14</span>
-                        </button>
-                    </li>
                 </ul>
 				<object id="map_object" data="/img/mapKorea.svg" width="700" height="700"></object>
 				<div class="nation_map" id="nationPanel" role="tabpanel">
@@ -303,7 +256,62 @@
 				        <span class="blind">구름많음</span>
 				    </a>
 				</div>
-				<script type="text/javascript" th:src="@{/weatherMapJS.js}"></script>
+				<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+				<script type="text/javascript">
+					let $weekly_list = $(".weekly_list"); // ul선택, class
+					for(let i=0;i<7;i++){
+						let today_of_week = moment().clone().add(i, 'days').format('dddd');
+						let day_MM_DD= moment().clone().add(i, 'days').format('MM-DD');
+						
+						let li_item = document.createElement('li');
+						li_item.classList.add('item');
+
+						let button_day = document.createElement('button');
+						button_day.classList.add('button');
+
+						
+						let span_day = document.createElement('span');
+						span_day.classList.add('day');
+						
+						let answer = "";
+						switch (today_of_week){
+						    case 'Monday': 
+						      answer = '월';
+						      break; 
+						    case 'Tuesday':
+						      answer = '화';
+						      break;
+						    case 'Wednesday':
+						      answer = '수'; 
+						      break;
+						    case 'Thursday':
+						      answer = '목'; 
+						      break; 
+						  case 'Friday':
+						    answer = '금'; 
+						    break; 
+							case 'Saturday':
+							  answer = '토'; 
+							  break; 
+						  case 'Sunday':
+						    answer = '일'; 
+						    break; 
+						  }
+						  span_day.innerHTML = answer;
+						
+						let span_date = document.createElement('span');
+						span_date.classList.add('date');
+						span_date.innerHTML = `${day_MM_DD}`;
+						
+
+						li_item.appendChild(button_day);
+						button_day.appendChild(span_day);
+						button_day.appendChild(span_date);
+						$weekly_list.append(li_item);
+					};
+
+				</script>
         </div>
 	</body>
 </html>
